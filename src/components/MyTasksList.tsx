@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FlatList, TouchableOpacity, View, Text, StyleSheet, FlatListProps } from 'react-native';
+import { useTheme } from '../contexts/theme';
+import { Theme } from '../contexts/Theme.interface';
 
 function FlatListHeaderComponent() {
+  const { theme } = useTheme()
+
+  const styles = useMemo(() => createStyles(theme), [theme])
+
   return (
     <View>
       <Text style={styles.header}>Minhas tasks</Text>
@@ -20,6 +26,10 @@ interface MyTasksListProps {
 }
 
 export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
+  const { theme } = useTheme()
+
+  const styles = useMemo(() => createStyles(theme), [theme])
+
   return (
     <FlatList
       data={tasks}
@@ -57,51 +67,53 @@ export function MyTasksList({ tasks, onLongPress, onPress }: MyTasksListProps) {
   )
 }
 
-const styles = StyleSheet.create({
-  header: {
-    color: '#3D3D4D',
-    fontSize: 24,
-    fontFamily: 'Poppins-SemiBold'
-  },
-  taskButton: {
-    flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    marginBottom: 4,
-    borderRadius: 4,
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  taskMarker: {
-    height: 16,
-    width: 16,
-    borderRadius: 8,
-    borderWidth: 1,
-    borderColor: '#3D3D4D',
-    marginRight: 10
-  },
-  taskText: {
-    color: '#3D3D4D',
-  },
-  taskButtonDone: {
-    flex: 1,
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    marginBottom: 4,
-    borderRadius: 4,
-    backgroundColor: 'rgba(25, 61, 223, 0.1)',
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  taskMarkerDone: {
-    height: 16,
-    width: 16,
-    borderRadius: 8,
-    backgroundColor: '#273FAD',
-    marginRight: 10
-  },
-  taskTextDone: {
-    color: '#A09CB1',
-    textDecorationLine: 'line-through'
-  }
-})
+const createStyles = (theme: Theme) => {
+  return StyleSheet.create({
+    header: {
+      color: theme.color.primary,
+      fontSize: 24,
+      fontFamily: 'Poppins-SemiBold'
+    },
+    taskButton: {
+      flex: 1,
+      paddingHorizontal: 10,
+      paddingVertical: 12,
+      marginBottom: 4,
+      borderRadius: 4,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    taskMarker: {
+      height: 16,
+      width: 16,
+      borderRadius: 8,
+      borderWidth: 1,
+      borderColor: theme.color.primary,
+      marginRight: 10
+    },
+    taskText: {
+      color: theme.color.primary,
+    },
+    taskButtonDone: {
+      flex: 1,
+      paddingHorizontal: 10,
+      paddingVertical: 12,
+      marginBottom: 4,
+      borderRadius: 4,
+      backgroundColor: theme.color.buttonDone,
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    taskMarkerDone: {
+      height: 16,
+      width: 16,
+      borderRadius: 8,
+      backgroundColor: theme.color.primary,
+      marginRight: 10
+    },
+    taskTextDone: {
+      color: theme.color.textDone,
+      textDecorationLine: 'line-through'
+    }
+  })
+}
